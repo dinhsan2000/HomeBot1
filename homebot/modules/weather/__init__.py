@@ -20,7 +20,7 @@ def weather(update, context):
 	try:
 		city = update.message.text.split(' ', 1)[1]
 	except IndexError:
-		update.message.reply_text("City not provided")
+		update.message.reply_text("Thành phố không được cung cấp")
 		return
 	if get_config("WEATHER_API_KEY", None) == None:
 		update.message.reply_text("OpenWeatherMap API key not specified\n"
@@ -36,7 +36,7 @@ def weather(update, context):
 	wind_unit = WIND_UNITS.get(get_config("WEATHER_TEMP_UNIT", None), "km/h")
 	response = requests.get(url=URL, params=parameters).json()
 	if response["cod"] != 200:
-		update.message.reply_text(f"Error: {response['message']}")
+		update.message.reply_text(f"Lỗi: {response['message']}")
 		return
 	city_name = response["name"]
 	city_country = response["sys"]["country"]
@@ -50,11 +50,11 @@ def weather(update, context):
 	humidity = response["main"]["humidity"]
 	wind_speed = response["wind"]["speed"]
 	update.message.reply_text(
-		f"Current weather for {city_name}, {city_country} ({city_lat}, {city_lon}):\n"
-		f"Weather: {weather_type} ({weather_type_description})\n"
-		f"Temperature: {temp}{temp_unit} (Min: {temp_min}{temp_unit} Max: {temp_max}{temp_unit})\n"
-		f"Humidity: {humidity}%\n"
-		f"Wind: {wind_speed}{wind_unit}"
+		f"Thời tiết hiện tại cho {city_name}, {city_country} ({city_lat}, {city_lon}):\n"
+		f"Thời tiết: {weather_type} ({weather_type_description})\n"
+		f"Nhiệt độ: {temp}{temp_unit} (Thấp nhất: {temp_min}{temp_unit} Cao nhất: {temp_max}{temp_unit})\n"
+		f"Độ ẩm: {humidity}%\n"
+		f"Mức gió: {wind_speed}{wind_unit}"
 	)
 
 commands = [
